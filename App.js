@@ -1,13 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import * as SQLite from 'expo-sqlite';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 export default function App() {
   const db = SQLite.openDatabase('example.db');
   const [isLoading,setIsLoading] = useState(true);
   const [names,setNames] = useState([]);
   const [currentName,setCurrentName] = useState(undefined);
 
+  useEffect(()=>{
+    db.transaction(tx=>{
+      tx.executeSql('CREATE TABLE IF NOT EXISTS names (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)')
+    })
+
+    db.transaction(tx=>{
+      tx.executeSql('SELECT * FROM names', null,
+        (txObj,resultSet)=> setNames(resultSet.rows._array),
+        (txObj,error)=>console.log(error)
+      );
+    })
+    setIsLoading(false)
+  },[])
   if (isLoading){
     return(
       <View style={styles.container}>
@@ -17,7 +30,7 @@ export default function App() {
   }
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <TextInput value={currentName} placeholder='nome' onChange={setCurrentName}/>
       <StatusBar style="auto" />
     </View>
   );
