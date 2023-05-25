@@ -28,9 +28,20 @@ export default function App() {
       </View>
     )
   }
+  const showNames = ()=>{
+    return names.map((name,index)=>{
+      return(
+        <View style={styles.row}>
+          <Text>{name.name}</Text>
+        </View>
+      )
+    })
+  }
+
   return (
     <View style={styles.container}>
       <TextInput value={currentName} placeholder='nome' onChange={setCurrentName}/>
+      {showNames()}
       <StatusBar style="auto" />
     </View>
   );
