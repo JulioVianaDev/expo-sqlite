@@ -31,7 +31,7 @@ export default function App() {
   const showNames = ()=>{
     return names.map((name,index)=>{
       return(
-        <View style={styles.row}>
+        <View key={index} style={styles.row}>
           <Text>{name.name}</Text>
         </View>
       )
@@ -41,7 +41,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <TextInput value={currentName} placeholder='nome' onChange={setCurrentName}/>
-      {showNames()}
+      {showNames()} 
       <StatusBar style="auto" />
     </View>
   );
@@ -54,4 +54,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    justifyContent: 'space-between',
+    margin: 8
+  }
 });
